@@ -1,0 +1,40 @@
+networks:
+  spring_net:
+    driver: bridge
+
+services:
+  spring:
+    networks:
+      - spring_net
+    depends_on:
+      - postgres
+    build: ./
+    image: "spring_app"
+    container_name: spring_app_container
+    ports:
+      - 8085:8080
+    restart: always
+
+  postgres:
+    networks:
+      - spring_net
+    image: postgres:14.4
+    container_name: spring_app_postgres_container
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+
+  adminer:
+    networks:
+      - spring_net
+    image: adminer:4.8.1
+    depends_on:
+      - postgres
+    restart: always
+    container_name: spring_app_postgres_adminer # 컨테이너 이름 설정
+    ports:
+      - 8086:8080

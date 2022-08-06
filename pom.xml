@@ -37,8 +37,9 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	<packaging>jar</packaging>
 	<build>
+		<finalName>demoApp</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
