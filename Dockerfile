@@ -11,6 +11,7 @@ EXPOSE 8080
 COPY ./mvnw ./mvnw.cmd ./pom.xml /app/
 # RUN mvn package
 RUN mvn dependency:resolve
+# CMD ["tail", "-f", "/dev/null"]
 COPY ./ /app/
 
 # RUN mvn clean package
