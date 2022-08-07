@@ -39,4 +39,17 @@ public class StudentService {
 
         studentRepository.deleteById(studentId);
     }
+
+    public void updateNewStudent(Student student) {
+        Optional<Student> studentRepo = studentRepository.findById(student.getId());
+        if (!studentRepo.isPresent()) {
+            throw new IllegalStateException("Student with id " + student.getId() + " does not exists");
+        }
+
+        studentRepo.get().setDob(student.getDob());
+        studentRepo.get().setName(student.getName());
+        studentRepo.get().setEmail(student.getEmail());
+
+        studentRepository.save(studentRepo.get());
+    }
 }
