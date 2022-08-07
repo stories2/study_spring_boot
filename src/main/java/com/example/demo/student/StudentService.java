@@ -46,6 +46,10 @@ public class StudentService {
             throw new IllegalStateException("Student with id " + student.getId() + " does not exists");
         }
 
+        if(studentRepository.findStudentByEmail(student.getEmail()).isPresent()) {
+            throw new IllegalStateException("Email already taken");
+        }
+
         studentRepo.get().setDob(student.getDob());
         studentRepo.get().setName(student.getName());
         studentRepo.get().setEmail(student.getEmail());
