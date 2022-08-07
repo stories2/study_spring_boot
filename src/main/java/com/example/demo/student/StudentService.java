@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -40,6 +41,7 @@ public class StudentService {
         studentRepository.deleteById(studentId);
     }
 
+    @Transactional
     public void updateNewStudent(Student student) {
         Optional<Student> studentRepo = studentRepository.findById(student.getId());
         if (!studentRepo.isPresent()) {
@@ -53,7 +55,5 @@ public class StudentService {
         studentRepo.get().setDob(student.getDob());
         studentRepo.get().setName(student.getName());
         studentRepo.get().setEmail(student.getEmail());
-
-        studentRepository.save(studentRepo.get());
     }
 }
