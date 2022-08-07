@@ -40,3 +40,17 @@ services:
     container_name: spring_app_postgres_adminer # 컨테이너 이름 설정
     ports:
       - 8086:8080
+
+  phppgadmin:
+    networks:
+      - spring_net
+    image: bitnami/phppgadmin:7.13.0
+    depends_on:
+      - postgres
+    restart: always
+    container_name: spring_app_phppgadmin_container
+    ports:
+      - 8087:8080
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_SSL_MODE=disable
