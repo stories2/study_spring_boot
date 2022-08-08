@@ -1,16 +1,22 @@
 networks:
   spring_net:
     driver: bridge
+  kafka-docker_kafka_net:
+    external: true
+
+volumes:
+  postgres_volume:
 
 services:
   spring:
     networks:
       - spring_net
+      - kafka-docker_kafka_net
     depends_on:
       - postgres
     build: ./
     volumes:
-      - ./:/app/
+      - ./:/app/:rw
     image: "spring_app"
     container_name: spring_app_container
     ports:
@@ -27,8 +33,11 @@ services:
       - "5432:5432"
     env_file:
       - .env
+#    user: 1000:1000
+#    user: root
     volumes:
-      - ./postgresql:/var/lib/postgresql/data
+      - postgres_volume:/var/lib/postgresql/data:z
+#      - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
   adminer:
     networks:
@@ -41,16 +50,16 @@ services:
     ports:
       - 8086:8080
 
-  phppgadmin:
-    networks:
-      - spring_net
-    image: bitnami/phppgadmin:7.13.0
-    depends_on:
-      - postgres
-    restart: always
-    container_name: spring_app_phppgadmin_container
-    ports:
-      - 8087:8080
-    environment:
-      - DATABASE_HOST=postgres
-      - DATABASE_SSL_MODE=disable
+#  phppgadmin:
+#    networks:
+#      - spring_net
+#    image: bitnami/phppgadmin:7.13.0
+#    depends_on:
+#      - postgres
+#    restart: always
+#    container_name: spring_app_phppgadmin_container
+#    ports:
+#      - 8087:8080
+#    environment:
+#      - DATABASE_HOST=postgres
+#      - DATABASE_SSL_MODE=disable
